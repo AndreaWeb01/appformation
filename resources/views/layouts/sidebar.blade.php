@@ -70,7 +70,7 @@
         </li>
         @endif
 
-        <li class="menu-header small text-uppercase">
+        {{-- <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Utilisateurs</span>
         </li>
         <li class="menu-item {{ 'entrees' == request()->path() ? 'active' : '' }}">
@@ -82,6 +82,7 @@
                 <i class="menu-icon tf-icons bx bx-folder-plus"></i>
                 <div data-i18n="Tables">SUPER ADMIN</div>
             </a>
-        </li>
+        </li> --}}
+        
     </ul>
 </aside>
