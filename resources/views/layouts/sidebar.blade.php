@@ -1,8 +1,8 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
         <a href="index.html" class="app-brand-link">
-            <img src="" alt="img_logo" class="img-fluid">
-        
+            <img src="{{ url('assets/img/favicon/favicon.ico') }}" alt="img_logo" class="img-fluid">
+            Application
         </a>
 
         <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
@@ -55,7 +55,7 @@
                 <div data-i18n="Tables">ENTREES</div>
             </a>
         </li>
-        @if(Auth::user()->usertype === 'Admin')
+
         <li class="menu-item {{ 'depenses' == request()->path() ? 'active' : '' }}">
             <a href="{{ route('depenses.index') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-folder-minus"></i>
@@ -68,7 +68,44 @@
                 <div data-i18n="Tables">CAISSE</div>
             </a>
         </li>
-        @endif
+
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Accès</span>
+        </li>
+        <li class="menu-item {{ 'caisses' == request()->path() ? 'active' : '' }}">
+            <a href="{{ route('users.index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-user"></i>
+                <div data-i18n="Tables">UTILISATEURS</div>
+            </a>
+        </li>
+        <li class="menu-item {{ 'caisses' == request()->path() ? 'active' : '' }}">
+            <a href="{{ route('roles.index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-refresh"></i>
+                <div data-i18n="Tables">ROLES</div>
+            </a>
+        </li>
+        <li class="menu-item {{ 'permissions' == request()->path() ? 'active' : '' }}">
+            <a href="{{ route('permissions.index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-key"></i>
+                <div data-i18n="Tables">PERMISSIONS</div>
+            </a>
+        </li>
+
+        
+        {{-- @if(Auth::user()->usertype === 'Admin')
+        <li class="menu-item {{ 'depenses' == request()->path() ? 'active' : '' }}">
+            <a href="{{ route('depenses.index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-folder-minus"></i>
+                <div data-i18n="Tables">DEPENSES</div>
+            </a>
+        </li>
+        <li class="menu-item {{ 'caisses' == request()->path() ? 'active' : '' }}">
+            <a href="{{ route('caisses.index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-wallet"></i>
+                <div data-i18n="Tables">CAISSE</div>
+            </a>
+        </li>
+        @endif --}}
 
         {{-- <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Utilisateurs</span>

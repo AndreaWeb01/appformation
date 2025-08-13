@@ -30,17 +30,18 @@
             </h6>
 
             <p>Date de début: {{ $session->date_debut }}  /  Date de fin: {{ $session->date_fin }}</p>
+            @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
             <a href="{{ route('sessions.show', $session->id) }}" class="btn btn-outline-primary">RETOUR A LA LISTE</a>
         </div>
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">Liste des versements</h5>
                 <a id="addVersementBtn" href="{{ route('versements.createParAuditeurEtSession', ['auditeur_id' => $auditeur->id, 'session_id' => $session->id]) }}" class="btn btn-outline-primary mt-3">Ajouter</a>
-                @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
+                
             </div>
         
             @if($versements->isEmpty())
@@ -71,7 +72,7 @@
                                     <form class="d-inline" action="{{ route('versements.destroy', $versement->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce versement ?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                                        <button type="submit" class="btn btn-danger btn-sm">Annuler</button>
                                     </form>
                                     {{-- <a href="{{ route('versement.destroy') }}" class="btn btn-danger btn-sm"></a> --}}
                                 </td>

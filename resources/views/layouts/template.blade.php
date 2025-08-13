@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
 
-    <title>Dashboard - Analytique | SAGESRH</title>
+    <title>Application SAGESRH</title>
     <meta name="description" content="" />
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ url('assets/img/favicon/favicon.ico') }}" />
@@ -48,93 +48,8 @@
         <div class="layout-page">
           <!-- Navbar -->
 
-            <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
-                <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-                <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
-                    <i class="bx bx-menu bx-sm"></i>
-                </a>
-                </div>
-
-                <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-                    <!-- Search -->
-                    <form method="GET" action="{{ route('formations.search') }}" class="navbar-nav align-items-center">
-                        <div class="nav-item d-flex align-items-center">
-                            <i class="bx bx-search fs-4 lh-0"></i>
-                            <input type="text" class="form-control border-0 shadow-none" name="search" placeholder="Chercher..." aria-label="Search..." value="{{ isset($search) ? $search: '' }}"/>
-                        </div>
-                    </form>
-                    <!-- /Search -->
-
-
-                    <ul class="navbar-nav flex-row align-items-center ms-auto">
-                    <!-- Place this tag where you want the button to render. -->
-                    
-                        <!-- User -->
-                        <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                            <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
-                                <div class="avatar avatar-online">
-                                    <img src="{{ url('assets/img/avatars/1.png') }}" alt class="w-px-40 h-auto rounded-circle" />
-                                </div>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li>
-                                    <a class="dropdown-item" href="#">
-                                        <div class="d-flex">
-                                            <div class="flex-shrink-0 me-3">
-                                                <div class="avatar avatar-online">
-                                                    <img src="{{ url('assets/img/avatars/1.png') }}" alt class="w-px-40 h-auto rounded-circle" />
-                                                </div>
-                                            </div>
-                                            <div class="flex-grow-1">
-                                                <span class="fw-semibold d-block">{{ Auth::user()->name }}</span>
-                                                <small class="text-muted">{{ Auth::user()->usertype }}</small>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <div class="dropdown-divider"></div>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('profile.edit') }}">
-                                        <i class="bx bx-user me-2"></i>
-                                        <span class="align-middle">Mon Profil</span>
-                                    </a>
-                                </li>
-                                {{-- <li>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="bx bx-user-plus me-2"></i>
-                                        <span class="align-middle">Nouvel utilisateur</span>
-                                    </a>
-                                </li> --}}
-                                {{-- <li>
-                                    <a class="dropdown-item" href="#">
-                                        <i class="bx bx-cog me-2"></i>
-                                        <span class="align-middle">Settings</span>
-                                    </a>
-                                </li> --}}
-                                <li>
-                                    <div class="dropdown-divider"></div>
-                                </li>
-                                <li>
-                                    <form method="POST" action="{{ route('logout') }}">
-                                        @csrf
-                                        <a class="dropdown-item" :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
-                                            <i class="bx bx-power-off me-2">Se Deconnecter</i>
-                                            {{-- <span class="align-middle">Se Deconnecter</span> --}}
-                                        </a>
-                                    </form>
-                                    {{-- <a class="dropdown-item" href="{{ route('logout') }}">
-                                        <i class="bx bx-power-off me-2"></i>
-                                        <span class="align-middle">Se Deconnecter</span>
-                                    </a> --}}
-                                </li>
-                            </ul>
-                        </li>
-                        <!--/ User -->
-                    </ul>
-                </div>
-            </nav>
+          @include('layouts.navbar')
+            
 
             <!-- / Navbar -->
             @yield('content')

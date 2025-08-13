@@ -8,21 +8,25 @@
     <div class="container-xxl flex-grow-1 container-p-y">
       <div class="py-3 mb-4">
         <h4 class="fw-bold"><span class="text-muted fw-light">TABLEAU DES SESSIONS</h4>
-        <a class="btn btn-outline-primary" href="{{ route('sessions.createForFormation', $formation->id) }}">Ajouter à la formation</a>
+
+        @if (session('success'))
+          <div class="alert alert-success">
+              {{ session('success') }}
+          </div>
+        @endif
+
       </div>
       <!-- Hoverable Table rows -->
       <div class="card">
-        <div class="card-header">
+        <div class="card-header d-flex justify-content-between align-items-center">
           <h5>NOM DE LA FORMATION: {{ $formation->nom }}</h5>
-          @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-          @endif
+
+          <a class="btn btn-outline-primary" href="{{ route('sessions.createForFormation', $formation->id) }}">Ajouter à la formation</a>
+          
         </div>
 
         @if($sessions->isEmpty())
-          <p class="card-header">Aucune Session pour l'instant. <br> Cliquez sur le bouton <b>AJOUTER A LA FORMATION</b> pour ajouter une formation</p>
+          <p class="card-header">Aucune Session pour l'instant. <br> Cliquez sur le bouton <b>AJOUTER A LA FORMATION</b> pour ajouter une session</p>
         @else
           <div class="table-responsive text-nowrap">
             <table class="table table-hover">

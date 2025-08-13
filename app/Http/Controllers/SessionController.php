@@ -33,7 +33,7 @@ class SessionController extends Controller
     {
         $request->validate([
             'formation_id' => 'required|exists:formations,id',
-            'date_debut' => 'required|date|after_or_equal:today',
+            'date_debut' => 'required|date',
             'date_fin' => 'required|date|after:date_debut',
             'nbreplaces' => 'required|integer|min:1',
         ],[
@@ -56,7 +56,8 @@ class SessionController extends Controller
             'nbre_place' => $request->nbreplaces,
         ]);
 
-        return redirect()->route('sessions.createForFormation')->with('success', 'Session créée avec succès');
+        return redirect()->route('sessions.by_formation', ['formation' => $request->formation_id])->with('success', 'Session créée avec succès');
+
     }
 
     /**

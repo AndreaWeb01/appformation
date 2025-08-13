@@ -13,16 +13,17 @@ class FormationController extends Controller
      */
     public function index(Request $request)
     {
-        $formationsQuery = Formation::query();
+        // $formationsQuery = Formation::query();
 
-        // Filtrer par année et mois si une date est fournie
-        if ($request->has('date_filtre')) {
-            $dateFiltre = $request->input('date_filtre');
-            $formationsQuery->whereYear('created_at', date('Y', strtotime($dateFiltre)))
-                            ->whereMonth('created_at', date('m', strtotime($dateFiltre)));
-        }
+        // // Filtrer par année et mois si une date est fournie
+        // if ($request->has('date_filtre')) {
+        //     $dateFiltre = $request->input('date_filtre');
+        //     $formationsQuery->whereYear('created_at', date('Y', strtotime($dateFiltre)))
+        //                     ->whereMonth('created_at', date('m', strtotime($dateFiltre)));
+        // }
 
-        $formations = $formationsQuery->Orderby('created_at', 'desc')->get();
+        // $formations = $formationsQuery->Orderby('created_at', 'desc')->get();
+        $formations = Formation::orderBy('created_at', 'desc')->get();
 
         return view('formations.index', compact('formations'));
 

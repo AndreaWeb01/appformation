@@ -10,11 +10,18 @@
         <div class="py-3 mb-4">
             <h3>Formation: {{ $session->formation->nom }}</h3>
             <h4 class="fw-bold"><span class="text-muted">Code Session: {{ $session->code }}</h4>
-            <h5>Date de début: {{ \Carbon\Carbon::parse($session->date_debut)->format('d-m-Y') }} / Date de fin: {{ \Carbon\Carbon::parse($session->date_fin)->format('d-m-Y') }}</h5>      
-            <a class="btn btn-outline-primary" href="{{ route('sessions.index') }}">Retour Aux Sessions</a>
+            <h5>Date de début: {{ \Carbon\Carbon::parse($session->date_debut)->format('d-m-Y') }} / Date de fin: {{ \Carbon\Carbon::parse($session->date_fin)->format('d-m-Y') }}</h5>    
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif  
         </div>
         <div class="card">
-            <h3 class="card-header">Auditeurs inscrits</h3>
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h3>Auditeurs inscrits</h3>
+                <a class="btn btn-outline-primary" href="{{ route('sessions.index') }}">Retour Aux Sessions</a>
+            </div>
 
             @if($session->auditeurs->isEmpty())
                 <p class="card-header">Aucun Auditeur  inscrire pour l'instant. <br> Scrollez vers le bas <i class="bx bx-down-arrow-circle me-1"></i> pour ajouter un auditeur</p>

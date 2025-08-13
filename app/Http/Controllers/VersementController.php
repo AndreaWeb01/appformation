@@ -45,60 +45,116 @@ class VersementController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'auditeur_id' => 'required|exists:auditeurs,id',
-            'session_id' => 'required|exists:sessions,id',
-            'description' => 'required|string|in:Inscription,1er Versement,2eme Versement,3eme Versement,4eme Versement',
-            'montant' => 'required|numeric|min:0',
-            'date_versement' => 'required|date',
-            'mode_paiement' => 'required|string|in:especes,carte bancaire,paiement mobile,virement bancaire',
-        ], [
-            'description.required' => "L'intitulé du versement est obligatoire.",
-            'description.in' => "L'intitulé du versement sélectionné n'est pas valide.",
-            'montant.required' => 'Le montant est obligatoire.',
-            'montant.numeric' => 'Le montant doit être un nombre.',
-            'montant.min' => 'Le montant doit être supérieur ou égal à 0.',
-            'date_versement.required' => 'La date de versement est obligatoire.',
-            'date_versement.date' => 'La date de versement doit être une date valide.',
-            'mode_paiement.required' => 'Le mode de paiement est obligatoire.',
-            'mode_paiement.in' => 'Le mode de paiement sélectionné n\'est pas valide.',
-        ]);
+        // ✅ Étape 1 – Validation initiale
+    $request->validate([
+        'auditeur_id' => 'required|exists:auditeurs,id',
+        'session_id' => 'required|exists:sessions,id',
+        'description' => 'required|string|in:Inscription,1er Versement,2eme Versement,3eme Versement,4eme Versement',
+        'montant' => 'required|numeric|min:0',
+        'date_versement' => 'required|date',
+        'mode_paiement' => 'required|string|in:especes,carte bancaire,paiement mobile,virement bancaire',
+    ]);
 
-        // Récupérer l'auditeur et la session à partir des IDs fournis dans la requête
-        $auditeur = Auditeur::findOrFail($request->auditeur_id);
-        $session = Session::findOrFail($request->session_id);
+    // ✅ Étape 2 – Récupération des entités
+    $auditeur = Auditeur::findOrFail($request->auditeur_id);
+    $session = Session::findOrFail($request->session_id);
 
-        $somme_versements = Versement::where('auditeur_id', $auditeur->id)
-                                    ->where('session_id', $session->id)
-                                    ->sum('montant');
+    // ✅ Étape 3 – Vérification : paiement total déjà effectué
+    $totalVerse = Versement::where('auditeur_id', $auditeur->id)
+        ->where('session_id', $session->id)
+        ->sum('montant');
 
-         //Calculer le nouveau montant restant à payer
-        $nouveau_reste_a_payer = $session->formation->prix - ($somme_versements + $request->montant);
+    if ($totalVerse >= $session->formation->prix) {
+        return redirect()->back()
+            ->withInput()
+            ->withErrors(['montant' => "Le client a déjà payé la totalité du montant de la formation. Aucun autre versement n'est autorisé."]);
+    }
 
-        $versement = new Versement;
-        $versement->auditeur_id = $request->auditeur_id;
-        $versement->session_id = $request->session_id;
-        $versement->description = $request->description;
-        $versement->montant = $request->montant;
-        $versement->resteapayer = $nouveau_reste_a_payer;
-        $versement->date_versement = $request->date_versement;
-        $versement->mode_paiement = $request->mode_paiement;
-        $versement->save();
+    // ✅ Étape 4 – Vérification : inscription obligatoire en premier
+    $inscriptionExiste = Versement::where('auditeur_id', $auditeur->id)
+        ->where('session_id', $session->id)
+        ->where('description', 'Inscription')
+        ->exists();
 
-        // Créer une nouvelle entrée avec l'intitulé du versement dans la colonne description et le montant dans la colonne montant
-        $entree = new Entree;
-        $entree->description = 'versement - ' . $versement->description;
-        $entree->montant = $versement->montant;
-        $entree->date_entree = now();
-        $entree->versement_id = $versement->id;
-        $entree->caisse_id = 1;
-        $entree->save();
+    if (!$inscriptionExiste && $request->description !== 'Inscription') {
+        return redirect()->back()
+            ->withInput()
+            ->withErrors(['description' => "Le client doit d'abord payer l'inscription avant d'effectuer d'autres versements."]);
+    }
 
-        // dd($somme_versements, $nouveau_reste_a_payer);
-        return redirect()->route('versements.par_auditeur_session', [
-            'auditeur_id' => $request->auditeur_id,
-            'session_id' => $request->session_id
-        ]);
+    // ✅ Étape 5 – Vérification : pas de double paiement de l'inscription
+    if ($inscriptionExiste && $request->description === 'Inscription') {
+        return redirect()->back()
+            ->withInput()
+            ->withErrors(['description' => "Le paiement d'inscription a déjà été effectué pour ce client."]);
+    }
+
+    // ✅ Étape 6 – Vérification : ordre logique des versements
+    $ordreVersements = [
+        '2eme Versement' => '1er Versement',
+        '3eme Versement' => '2eme Versement',
+        '4eme Versement' => '3eme Versement',
+    ];
+
+    if (array_key_exists($request->description, $ordreVersements)) {
+        $prerequis = $ordreVersements[$request->description];
+
+        $versementPrecedentExiste = Versement::where('auditeur_id', $auditeur->id)
+            ->where('session_id', $session->id)
+            ->where('description', $prerequis)
+            ->exists();
+
+        if (!$versementPrecedentExiste) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['description' => "Vous devez d'abord effectuer le $prerequis avant de faire un $request->description."]);
+        }
+    }
+
+    // ✅ Étape 7 – Vérification : pas deux fois le même type de versement
+    $versementDejaFait = Versement::where('auditeur_id', $auditeur->id)
+        ->where('session_id', $session->id)
+        ->where('description', $request->description)
+        ->exists();
+
+    if ($versementDejaFait) {
+        return redirect()->back()
+            ->withInput()
+            ->withErrors(['description' => "Le versement '{$request->description}' a déjà été effectué pour ce client."]);
+    }
+
+    // ✅ Étape 8 – Vérification : pas de dépassement du reste à payer
+    $resteAPayer = $session->formation->prix - $totalVerse;
+    if ($request->montant > $resteAPayer) {
+        return redirect()->back()
+            ->withInput()
+            ->withErrors(['montant' => "Le montant du versement dépasse le reste à payer ({$resteAPayer} FCFA)."]);
+    }
+
+    // ✅ Étape 9 – Enregistrement du versement
+    $versement = new Versement;
+    $versement->auditeur_id = $auditeur->id;
+    $versement->session_id = $session->id;
+    $versement->description = $request->description;
+    $versement->montant = $request->montant;
+    $versement->resteapayer = $resteAPayer - $request->montant;
+    $versement->date_versement = $request->date_versement;
+    $versement->mode_paiement = $request->mode_paiement;
+    $versement->save();
+
+    // ✅ Étape 10 – Enregistrement dans la caisse
+    $entree = new Entree;
+    $entree->description = 'versement - ' . $versement->description;
+    $entree->montant = $versement->montant;
+    $entree->date_entree = now();
+    $entree->versement_id = $versement->id;
+    $entree->caisse_id = 1;
+    $entree->save();
+
+    return redirect()->route('versements.par_auditeur_session', [
+        'auditeur_id' => $auditeur->id,
+        'session_id' => $session->id
+    ])->with('success', 'Versement enregistré avec succès.');
        
     }
 

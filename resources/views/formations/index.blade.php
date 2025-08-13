@@ -8,17 +8,20 @@
     <div class="container-xxl flex-grow-1 container-p-y">
       <div class="py-3 mb-4">
         <h4 class="fw-bold"><span class="text-muted fw-light">TABLEAU DES FORMATIONS</h4>
-        <a class="btn btn-outline-primary" href="{{ route('formations.create') }}">Ajouter</a>
-      </div>
-      <!-- Hoverable Table rows -->
-      <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          <h5>Liste des formations</h5>
-          @if (session('success'))
+        
+        @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
             </div>
           @endif
+      </div>
+      <!-- Hoverable Table rows -->
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          
+          <h5>Liste des formations</h5>
+          <a class="btn btn-outline-primary" href="{{ route('formations.create') }}">Ajouter</a>
+          
 
           {{-- <form action="{{ route('formations.index') }}" method="GET" class="mb-3">
             <div class="input-group">

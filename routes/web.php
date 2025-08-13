@@ -13,6 +13,9 @@ use App\Http\Controllers\DepenseController;
 use App\Http\Controllers\CaisseController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EntrepriseController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,10 +41,42 @@ Route::resource('entreprises', EntrepriseController::class);
 
 Route::get('/dashboard', [AdminController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+
+
+// Utilisateurs //
+Route::get('users', [UserController::class, 'index'])->name('users.index');
+Route::get('users/create', [UserController::class, 'create'])->name('users.create');
+Route::post('users', [UserController::class, 'store'])->name('users.store');
+Route::get('users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
+Route::get('users/{userId}/delete', [UserController::class, 'destroy'])->name('users.destroy');
+
+// Roles //
+Route::get('roles', [RoleController::class, 'index'])->name('roles.index');
+Route::get('roles/create', [RoleController::class, 'create'])->name('roles.create');
+Route::post('roles', [RoleController::class, 'store'])->name('roles.store');
+Route::get('roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
+Route::put('roles/{role}', [RoleController::class, 'update'])->name('roles.update');
+Route::delete('roles/{roleId}/delete', [RoleController::class, 'destroy'])->name('roles.destroy');
+Route::get('roles/{roleId}/give-permissions', [RoleController::class, 'addPermissionToRole'])->name('roles.addPermissionToRole');
+Route::put('roles/{roleId}/give-permissions', [RoleController::class, 'givePermissionToRole'])->name('roles.givePermissionToRole');
+
+
+// Permissions //
+Route::get('permissions', [PermissionController::class, 'index'])->name('permissions.index');
+Route::get('permissions/create', [PermissionController::class, 'create'])->name('permissions.create');
+Route::post('permissions', [PermissionController::class, 'store'])->name('permissions.store');
+Route::get('permissions/{permission}/edit', [PermissionController::class, 'edit'])->name('permissions.edit');
+Route::put('permissions/{permission}', [PermissionController::class, 'update'])->name('permissions.update');
+Route::delete('permissions/{permissionId}/delete', [PermissionController::class, 'destroy'])->name('permissions.destroy');
+
+
+
+
 
     //FORMATION
     Route::resource('formations', FormationController::class);
+
     Route::get('/searchFormation', [FormationController::class, 'search'])->name('formations.search');
 
 
@@ -86,7 +121,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+// });
 
 require __DIR__.'/auth.php';
 
