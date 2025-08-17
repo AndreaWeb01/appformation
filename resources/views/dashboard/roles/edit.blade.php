@@ -32,6 +32,12 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="mb-3 col-md-12">
+                            @foreach ($permissions as $permission)
+                                <input type="checkbox" name="permissions[]" value="{{ $permission->name }}" {{ $role->hasPermissionTo($permission->name) ? 'checked' : '' }}/>
+                                <label class="form-label">{{ $permission->name }}</label>
+                            @endforeach
+                        </div>
                         <button type="submit" class="btn btn-primary">Valider</button>
                     </form>
                 </div>

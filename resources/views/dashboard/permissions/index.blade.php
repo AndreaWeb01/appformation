@@ -46,7 +46,7 @@
                                 <form class="d-inline" action="{{ url('permissions/'.$permission->id.'/delete') }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette permission ?');">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" style="background:none; border:none; cursor:pointer; color:red;">
+                                    <button type="submit" class="btn btn-danger btn-sm">
                                         <i class="bx bx-trash me-1"></i>
                                     </button>
                                 </form>

@@ -21,14 +21,22 @@
                 <div class="card-body">
                     <form action="{{ route('roles.store') }}" method="POST">
                         @csrf
-                        <div class="row mb-3">
-                            <div class="col-md-12">
+                        <div class="row">
+                            <div class="mb-3 col-md-12">
                                 <label class="form-label" for="titre">Titre</label>
                                 <input type="text" class="form-control" id="titre" name="name" placeholder="Entrer le titre" />
                                 @error('name')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror
                             </div>
+
+                            <div class="mb-3 col-md-12">
+                                @foreach ($permissions as $permission)
+                                    <input type="checkbox" name="permissions[]" value="{{ $permission->name }}"/>
+                                    <label class="form-label">{{ $permission->name }}</label>
+                                @endforeach
+                            </div>
+
                         </div>
                         <button type="submit" class="btn btn-primary">Valider</button>
                     </form>

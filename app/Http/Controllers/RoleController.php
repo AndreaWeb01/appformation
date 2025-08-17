@@ -17,20 +17,24 @@ public function index()
 
     public function create()
     {
-        return view('dashboard.roles.create');
+        $permissions = Permission::all();
+        return view('dashboard.roles.create', compact('permissions'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|max:255',
+            'permissions' => 'array|required'
         ]);
 
-        $role = $request->name;
 
-        Role::create([
-            'name' => $role
+        $role = Role::create([
+            'name' => $request->name,
+            'guard_name' => 'web',
         ]);
+
+        $role->syncPermissions($request->permissions);
 
         return redirect()->route('roles.index')->with('status', 'Role enregistré avec succès');
 
@@ -38,18 +42,22 @@ public function index()
 
     public function edit(Role $role)
     {
-        return view('dashboard.roles.edit', compact("role"));
+        $permissions = Permission::all();
+        return view('dashboard.roles.edit', compact('role', 'permissions'));
     }
 
     public function update(Request $request, Role $role)
     {
         $request->validate([
-            'name' => 'required|string|unique:roles,name,'.$role->id
+            'name' => 'required|string|unique:roles,name,'.$role->id,
+            'permissions' => 'array|required',
         ]);
 
         $role->update([
             'name' => $request->name
         ]);
+
+        $role->syncPermissions($request->permissions);
 
         return redirect('roles')->with('status','Role Modifié avec succès');
     }
@@ -61,31 +69,31 @@ public function index()
         return redirect('roles')->with('status','Role supprimé avec succès');
     }
 
-    public function addPermissionToRole($roleId)
-    {
-        $permissions = Permission::get();
-        $role = Role::findOrFail($roleId);
-        $rolePermissions = DB::table('role_has_permissions')
-                                ->where('role_has_permissions.role_id', $role->id)
-                                ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
-                                ->all();
+    // public function addPermissionToRole($roleId)
+    // {
+    //     $permissions = Permission::get();
+    //     $role = Role::findOrFail($roleId);
+    //     $rolePermissions = DB::table('role_has_permissions')
+    //                             ->where('role_has_permissions.role_id', $role->id)
+    //                             ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
+    //                             ->all();
 
-        return view('dashboard.roles.add-permissions', [
-            'role' => $role,
-            'permissions' => $permissions,
-            'rolePermissions' => $rolePermissions
-        ]);
-    }
+    //     return view('dashboard.roles.add-permissions', [
+    //         'role' => $role,
+    //         'permissions' => $permissions,
+    //         'rolePermissions' => $rolePermissions
+    //     ]);
+    // }
 
-    public function givePermissionToRole(Request $request, $roleId)
-    {
-        $request->validate([
-            'permission' => 'required'
-        ]);
+    // public function givePermissionToRole(Request $request, $roleId)
+    // {
+    //     $request->validate([
+    //         'permission' => 'required'
+    //     ]);
 
-        $role = Role::findOrFail($roleId);
-        $role->syncPermissions($request->permission);
+    //     $role = Role::findOrFail($roleId);
+    //     $role->syncPermissions($request->permission);
 
-        return redirect('roles')->with('status','Permissions added to role');
-    }
+    //     return redirect('roles')->with('status','Permissions added to role');
+    // }
 }
