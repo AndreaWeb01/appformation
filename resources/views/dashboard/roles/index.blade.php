@@ -25,30 +25,27 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody class="table-border-bottom-0">
+                    <tbody class="table-border-bottom-0 table-responsive">
                         @foreach($roles as $key=>$role)
                         <tr>
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $role->name }}</td>
                             <td>
                                 @foreach($role->permissions as $permission)
-                                    <span class="">{{ $permission->name }}</span>
+                                    <span class="badge bg-secondary">{{ $permission->name }}</span>
                                 @endforeach
                                 
-                                {{-- {{ $role->permissions->pluck('name')->implode(', ') }} --}}
                             </td>
-                            {{-- <td>{{ $role->created_at->diffForHumans() }}</</td> --}}
                             
                             <td>
-                                {{-- <a href="{{ url('roles/'.$role->id.'/give-permissions') }}" class="btn btn-warning">Autorisations</a> --}}
-                                                
-                                <a href="{{ url('roles/'.$role->id.'/edit') }}" class="btn btn-success"><i class="bx bx-edit me-1"></i></a>
+                                              
+                                <a href="{{ url('roles/'.$role->id.'/edit') }}" class="btn btn-success btn-sm"><i class="bx bx-edit me-1"></i></a>
                                                
-                                {{-- <a href="{{ url('roles/'.$role->id.'/delete') }}" class="btn btn-danger">Supprimer</a> --}}
+                
                                 <form class="d-inline" action="{{ url('roles/'.$role->id.'/delete') }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce rôle ?');">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">
+                                    <button type="submit" class="btn btn-danger btn-sm">
                                        <i class="bx bx-trash me-1"></i>
                                     </button>
                                 </form>

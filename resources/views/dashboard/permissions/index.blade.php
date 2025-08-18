@@ -42,7 +42,8 @@
                             <td>{{ $permission->created_at }}</td>
                             <td>
                                 
-                                <a class="d-inline" style="color:limegreen;" href="{{ url('permissions/'.$permission->id.'/edit') }}"><i class="bx bx-edit-alt me-1"></i></a>
+                                <a href="{{ url('permissions/'.$permission->id.'/edit') }}" class="btn btn-success btn-sm"><i class="bx bx-edit me-1"></i></a>
+
                                 <form class="d-inline" action="{{ url('permissions/'.$permission->id.'/delete') }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette permission ?');">
                                     @csrf
                                     @method('DELETE')

@@ -56,7 +56,7 @@
                         </div>
                         
                         <div class="mb-3">
-                            <label for="">Roles</label>
+                            <label for="">Rôle</label>
                             <select name="roles[]" class="form-control">
                                 <option value="">Selectionner le role</option>
                                 @foreach ($roles as $role)

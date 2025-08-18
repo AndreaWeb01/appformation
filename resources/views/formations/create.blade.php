@@ -27,8 +27,8 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label" for="prixform">Prix</label>
-                                    <input type="text" class="form-control" id="prixform" name="prixform" placeholder="Entrer le coût de la formation"/>
+                                    <label class="form-label" for="prixform">Coût de la formation</label>
+                                    <input type="" class="form-control" id="prixform" name="prixform" placeholder="Entrer le coût de la formation"/>
                                     @error('prixform')
                                         <div class="text-danger">{{ $message }}</div>
                                     @enderror
@@ -44,7 +44,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label" for="montant_inscrip">Montant Inscription</label>
+                                    <label class="form-label" for="montant_inscrip">Droit d'inscription</label>
                                     <input type="text" class="form-control" id="montant_inscrip" name="montant_inscrip" placeholder="Entrer le montant de l'inscription"/>
                                     @error('montant_inscrip')
                                         <div class="text-danger">{{ $message }}</div>

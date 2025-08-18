@@ -87,7 +87,7 @@ class SessionController extends Controller
     {
         $request->validate([
             'formation_id' => 'required|exists:formations,id',
-            'date_debut' => 'required|date|after_or_equal:today',
+            'date_debut' => 'required|date',
             'date_fin' => 'required|date|after:date_debut',
             'nbreplaces' => 'required|integer|min:1',
         ],[

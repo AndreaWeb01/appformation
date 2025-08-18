@@ -14,7 +14,7 @@ class UserController extends Controller
         // $users = User::all();
         
         $users = User::all()->filter(function ($user) {
-            return !$user->hasRole('superadmin');
+            return !$user->hasRole('super admin');
         });
         return view('dashboard.users.index', compact('users'));
     }
@@ -22,7 +22,7 @@ class UserController extends Controller
     public function create()
     {
         // $roles = Role::pluck('name','name')->all();
-        $roles = Role::where('name', '!=', 'superadmin')->pluck('name', 'name')->all();
+        $roles = Role::where('name', '!=', 'super admin')->pluck('name', 'name')->all();
         return view('dashboard.users.create', compact('roles'));
     }
 
@@ -51,7 +51,7 @@ class UserController extends Controller
         // $roles = Role::pluck('name','name')->all();
         // $userRoles = $user->roles->pluck('name','name')->all();
 
-        $roles = Role::where('name', '!=', 'superadmin')->pluck('name', 'name')->all();
+        $roles = Role::where('name', '!=', 'super admin')->pluck('name', 'name')->all();
         $userRoles = $user->roles->pluck('name', 'name')->all();
         return view('dashboard.users.edit', compact('user', 'roles', 'userRoles'));
     }

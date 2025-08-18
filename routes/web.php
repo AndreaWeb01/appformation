@@ -42,6 +42,11 @@ Route::resource('entreprises', EntrepriseController::class);
 Route::get('/dashboard', [AdminController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 
+//FORMATION
+Route::resource('formations', FormationController::class);
+
+Route::get('/searchFormation', [FormationController::class, 'search'])->name('formations.search');
+
 
 // Utilisateurs //
 Route::get('users', [UserController::class, 'index'])->name('users.index');
@@ -49,7 +54,7 @@ Route::get('users/create', [UserController::class, 'create'])->name('users.creat
 Route::post('users', [UserController::class, 'store'])->name('users.store');
 Route::get('users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
 Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
-Route::get('users/{userId}/delete', [UserController::class, 'destroy'])->name('users.destroy');
+Route::delete('users/{userId}/delete', [UserController::class, 'destroy'])->name('users.destroy');
 
 // Roles //
 Route::get('roles', [RoleController::class, 'index'])->name('roles.index');
@@ -58,8 +63,7 @@ Route::post('roles', [RoleController::class, 'store'])->name('roles.store');
 Route::get('roles/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
 Route::put('roles/{role}', [RoleController::class, 'update'])->name('roles.update');
 Route::delete('roles/{roleId}/delete', [RoleController::class, 'destroy'])->name('roles.destroy');
-Route::get('roles/{roleId}/give-permissions', [RoleController::class, 'addPermissionToRole'])->name('roles.addPermissionToRole');
-Route::put('roles/{roleId}/give-permissions', [RoleController::class, 'givePermissionToRole'])->name('roles.givePermissionToRole');
+
 
 
 // Permissions //
@@ -74,10 +78,7 @@ Route::delete('permissions/{permissionId}/delete', [PermissionController::class,
 
 
 
-    //FORMATION
-    Route::resource('formations', FormationController::class);
-
-    Route::get('/searchFormation', [FormationController::class, 'search'])->name('formations.search');
+    
 
 
     //SESSION
@@ -127,6 +128,9 @@ require __DIR__.'/auth.php';
 
 Route::middleware(['auth','role:Admin'])->group(function()
 {
+
+
+    
     Route::get('/admin/dashboard', [AdminController::class, 'Admindashboard'])->name('admin.dashboard');
 
     //DEPENSES

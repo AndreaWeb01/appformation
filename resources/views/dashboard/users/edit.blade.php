@@ -54,38 +54,22 @@
                             </div>
                         </div>
 
-                        {{-- <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label for="" class="form-label">Mot de passe</label>
-                                    <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" id="password" placeholder="Entrez votre mot de passe" required>
-                                    @error('password')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="" class="form-label">Confirmation de mot de passe</label>
-                                    <input type="password" name="confirm_password" class="form-control @error('confirm_password') is-invalid @enderror" id="confirm_password" placeholder="Confirmer votre mot de passe" required>
-                                    @error('confirm_password')
-                                    <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div> --}}
 
-        <div class="mb-3">
-            <label for="">Roles</label>
-            <select name="roles[]" class="form-control">
-                <option value="">Selectionner le role</option>
-                @foreach ($roles as $role)
+                        <div class="mb-3">
+                            <label for="">Roles</label>
+                            <select name="roles[]" class="form-control">
+                                <option value="">Selectionner le role</option>
+                                @foreach ($roles as $role)
 
-                <option value="{{ $role }}" {{ in_array($role, $userRoles) ? 'selected':'' }}>{{ $role }}</option>
-                @endforeach
-            </select>
-        </div>
+                                <option value="{{ $role }}" {{ in_array($role, $userRoles) ? 'selected':'' }}>{{ $role }}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
-        <button type="submit" class="btn btn-secondary">Soumettre</button>
-        </form>
+                        <button type="submit" class="btn btn-primary">Soumettre</button>
+                    </form>
 
-    </div> <!-- end card-body-->
-</div> <!-- end card-->
+                </div> <!-- end card-body-->
+            </div> <!-- end card-->
 
-@endsection
+            @endsection

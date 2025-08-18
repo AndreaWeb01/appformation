@@ -15,7 +15,7 @@
 
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Ajouter un rôle</h5>
+                    <h5 class="mb-0">Modifier un rôle</h5>
                     <a class="btn btn-outline-primary" href="{{ route('roles.index') }}">Voir la liste</a>
                 </div>
                 <div class="card-body">

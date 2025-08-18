@@ -69,31 +69,4 @@ public function index()
         return redirect('roles')->with('status','Role supprimé avec succès');
     }
 
-    // public function addPermissionToRole($roleId)
-    // {
-    //     $permissions = Permission::get();
-    //     $role = Role::findOrFail($roleId);
-    //     $rolePermissions = DB::table('role_has_permissions')
-    //                             ->where('role_has_permissions.role_id', $role->id)
-    //                             ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
-    //                             ->all();
-
-    //     return view('dashboard.roles.add-permissions', [
-    //         'role' => $role,
-    //         'permissions' => $permissions,
-    //         'rolePermissions' => $rolePermissions
-    //     ]);
-    // }
-
-    // public function givePermissionToRole(Request $request, $roleId)
-    // {
-    //     $request->validate([
-    //         'permission' => 'required'
-    //     ]);
-
-    //     $role = Role::findOrFail($roleId);
-    //     $role->syncPermissions($request->permission);
-
-    //     return redirect('roles')->with('status','Permissions added to role');
-    // }
 }

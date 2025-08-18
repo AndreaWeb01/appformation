@@ -19,12 +19,15 @@
             </h6> --}} 
 
             <h6>
-                Coût Formation: {{ $session->formation->prix }} FCFA / 
+                Droit d'inscription: {{ $session->formation->montant_inscription }} FCFA / 
+                Coût Formation: {{ $session->formation->prix }} FCFA 
+            </h6>
+            <h6>
                 @if($versements->isEmpty())
-                    Reste à payer: {{ $session->formation->prix }} FCFA
+                    <b>Reste à payer: {{ $session->formation->prix }} FCFA</b>
                 @else
                     
-                    Reste à payer: {{ $reste_a_payer }}  FCFA
+                    <b>Reste à payer: {{ $reste_a_payer }}  FCFA</b>
                     
                 @endif 
             </h6>

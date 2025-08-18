@@ -55,12 +55,12 @@
                   <td>{{ $formation->prix}} FCFA</td>
                   <td>{{ Str::limit($formation->description, 25)}}</td>
                   <td>
-                    <a class="d-inline" href="{{ route('sessions.by_formation', $formation->id) }}"><i class="bx bx-archive-in me-1"></i></a>
-                    <a class="d-inline" style="color:limegreen;" href="{{ route('formations.edit', $formation->id) }}"><i class="bx bx-edit-alt me-1"></i></a>
+                    <a class="btn btn-primary btn-sm" href="{{ route('sessions.by_formation', $formation->id) }}"><i class="bx bx-archive-in me-1"></i></a>
+                    <a class="btn btn-success btn-sm" href="{{ route('formations.edit', $formation->id) }}"><i class="bx bx-edit-alt me-1"></i></a>
                     <form class="d-inline" action="{{ route('formations.destroy', $formation->id) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce post ?');">
                       @csrf
                       @method('DELETE')
-                      <button type="submit" style="background:none; border:none; cursor:pointer; color:red;">
+                      <button type="submit" class="btn btn-danger btn-sm">
                           <i class="bx bx-trash me-1"></i>
                       </button>
                     </form>
